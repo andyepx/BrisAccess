@@ -35,6 +35,7 @@ class DataController < ActionController::Base
 	  	render :json => return_data
 	else
 		render :json => data
+	end
 
   end
 
@@ -59,7 +60,8 @@ class DataController < ActionController::Base
 	  	render :json => return_data
 	else
 		render :json => data
-		
+	end
+
   end
 
   def areas
@@ -83,6 +85,7 @@ class DataController < ActionController::Base
 	  	render :json => return_data
 	else
 		render :json => data
+	end
 
   end
 
