@@ -77,6 +77,4 @@ class DataController < ActionController::Base
 
   end
 
-
-
 end
