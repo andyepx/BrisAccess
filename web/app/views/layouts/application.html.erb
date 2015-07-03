@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="brisAccess">
 <head>
-  <title>Web</title>
+  <title>BrisAccess</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body ng-controller="mainController">
 
 <%= yield %>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 
 </body>
 </html>

@@ -89,4 +89,29 @@ class DataController < ActionController::Base
 
   end
 
+  def ferries
+
+  	stop = params[:stop]
+
+  	file = File.read(Rails.root.join('public', 'ferries_accessibility.json'))
+  	data = JSON.parse(file)
+
+  	return_data = []
+
+  	if stop
+	  	data.each do |child|
+	  		if child['Terminal Name'].downcase.eql? stop.downcase
+	    		return_data.push(child)
+	    	end
+		end
+	end
+
+	if return_data.length > 0
+	  	render :json => return_data
+	else
+		render :json => data
+	end
+
+  end
+
 end

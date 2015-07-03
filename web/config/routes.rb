@@ -5,9 +5,10 @@ Rails.application.routes.draw do
   get 'data/locations' => 'data#locations'
   get 'data/qr' => 'data#qr'
   get 'data/areas' => 'data#areas'
+  get 'data/ferries' => 'data#ferries'
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'application#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
