@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
@@ -25,7 +24,7 @@ public class JourneyLoader implements JSONRequest.NetworkListener
 
     private GoogleMap map;
     private ArrayList<Leg> legsList;
-    private ArrayList<Polyline> polylines;
+    private static ArrayList<Polyline> polylines = new ArrayList<> ();
 
     public JourneyLoader(String fromId, String destId, String date, GoogleMap map)
     {
@@ -34,19 +33,17 @@ public class JourneyLoader implements JSONRequest.NetworkListener
         this.date = date;
         this.map = map;
 
-        legsList = new ArrayList<Leg> ();
-        polylines = new ArrayList<Polyline> ();
+        legsList = new ArrayList<> ();
     }
 
-    public void requestPlan()
+    public void loadJourney()
     {
         //showProgressBar(true);
 
-		/* Call our php code on web zone */
         String urlString = "http://dev-cloud.teardesign.com:3030/data/translink/travel?from="
                 + Uri.encode(fromId) + "&to=" + Uri.encode(destId) + "&at=" + Uri.encode(date);
 
-        Log.d("JourneyMap request: ", urlString);
+        Log.d("JourneyLoader request: ", urlString);
         request = new JSONRequest();
         request.setListener(this);
         request.execute(urlString);
@@ -75,6 +72,9 @@ public class JourneyLoader implements JSONRequest.NetworkListener
 
             addLineToMap(poly);
         }
+
+        StopsLoader stopsLoader = new StopsLoader(legsList, map);
+        stopsLoader.loadStops();
     }
 
     public void addLineToMap(String line)
@@ -86,11 +86,13 @@ public class JourneyLoader implements JSONRequest.NetworkListener
         polylines.add(map.addPolyline(polylineOptions));
     }
 
-    public void removeAllLines ()
+    public static void removeAllLines ()
     {
         for (Polyline line : polylines)
         {
             line.setVisible(false);
         }
+
+        polylines.clear();
     }
 }
