@@ -57,6 +57,10 @@ public class JourneyLoader implements JSONRequest.NetworkListener
         JSONObject obj = (JSONObject) JSONValue.parse(result);
         JSONObject travelOption = (JSONObject) obj.get("TravelOptions");
         JSONArray array = (JSONArray) travelOption.get("Itineraries");
+
+        if(array.isEmpty())
+            return;
+
         JSONObject itinerary = (JSONObject) array.get(0);
         JSONArray legs = (JSONArray) itinerary.get("Legs");
 

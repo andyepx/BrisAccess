@@ -1,6 +1,17 @@
 <resources>
     <string name="app_name">BrisAccess</string>
-
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_ask_help">AskHelpActivity</string>
+
+    <string name="assist_title">This station has steep ramp</string>
+    <string name="assist_content">The station has either a rail crossing
+        or steep ramps and assistance from a companion, carer, friend, relative
+        or support worker may be required to access the station. \n\n
+        Do you want to call or SMS Queensland Rail for assistance?</string>
+
+    <string name="stairs_title">This station has stair access</string>
+    <string name="stairs_content">The station has stair access to the entry
+        or to one or more of the platforms. You may not be able to access the station
+        even with assistance and may need to find an alternative route. \n\n
+        Do you want to call or SMS Queensland Rail for assistance?</string>
 </resources>

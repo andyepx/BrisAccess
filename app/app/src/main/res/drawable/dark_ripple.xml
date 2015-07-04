@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false" android:drawable="@color/material_grey_200" android:color="@color/black" />
+    <item android:state_focused="true" android:state_pressed="true" android:drawable="@color/material_pink_300" android:color="@color/black" />
+    <item android:state_focused="false" android:state_pressed="true" android:drawable="@color/material_pink_300" android:color="@color/black" />
+    <item android:state_enabled="true" android:drawable="@color/material_pink_900" android:color="@color/white" />
+</selector>

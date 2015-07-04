@@ -3,6 +3,7 @@ package com.whatamelon.brisaccess;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
@@ -40,6 +41,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -58,7 +60,10 @@ public class MainActivity extends AppCompatActivity implements
         OnClickListener,
         OnItemClickListener
 {
-    final String TAG = "BrisAccess";
+    public static final String TAG = "BrisAccess";
+    public static final String HELP_TITLE = "TITLE";
+    public static final String HELP_CONTENT = "CONTENT";
+
     private static final LatLng DEFAULT_LOCATION = new LatLng(-27.498037,153.017823);
     private LatLng userLatLng;
     private Marker userMarker;
@@ -155,7 +160,8 @@ public class MainActivity extends AppCompatActivity implements
         progressBar.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
     }
 
-    public void mapInit() {
+    public void mapInit()
+    {
         LatLng center = DEFAULT_LOCATION;
 
         mapFrag = (SupportMapFragment) getSupportFragmentManager()
@@ -169,6 +175,36 @@ public class MainActivity extends AppCompatActivity implements
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 15));
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
+
+        mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener()
+        {
+            @Override
+            public void onInfoWindowClick(Marker marker)
+            {
+                String snippet = marker.getSnippet();
+
+                switch (snippet)
+                {
+                    case "ASSIST REQUIRED":
+                        showHelpActivity(getString(R.string.assist_title), getString(R.string.assist_content));
+                        break;
+                    case "WARNING: STAIRS":
+                        showHelpActivity(getString(R.string.assist_title), getString(R.string.assist_content));
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        });
+    }
+
+    public void showHelpActivity (String title, String content)
+    {
+        Intent intent = new Intent(this, AskHelpActivity.class);
+        intent.putExtra(HELP_TITLE, title);
+        intent.putExtra(HELP_CONTENT, content);
+        startActivity(intent);
     }
 
     @Override
@@ -179,7 +215,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    protected void onStop() {
+    protected void onStop()
+    {
         // Disconnecting the client invalidates it.
         googleApiClient.disconnect();
         super.onStop();
@@ -197,7 +234,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
+    public void onConnectionSuspended(int i)
+    {
         Log.i(TAG, "GoogleApiClient connection has been suspend");
     }
 
