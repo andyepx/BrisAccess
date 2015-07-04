@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -21,19 +22,24 @@ import java.util.ArrayList;
 public class StopsLoader implements JSONRequest.NetworkListener
 {
     private ArrayList<Leg> legs;
-    private ArrayList<Stop> stops;
+    private ArrayList<Stop> nonTrainStops;
+    private ArrayList<Stop> trainStops;
     private static ArrayList<Marker> stopMarkers = new ArrayList<>();
 
     private JSONRequest request;
     private GoogleMap map;
-    private int[] markerIcons = {R.drawable.bus_geo_border, R.drawable.train_geo_border, R.drawable.ferry_geo_border};
+
+    private int[] markerIcons = { R.drawable.bus_geo_border,
+            R.drawable.train_geo_border,
+            R.drawable.ferry_geo_border};
 
     public StopsLoader (ArrayList<Leg> legs, GoogleMap map)
     {
         this.legs = legs;
         this.map = map;
 
-        stops = new ArrayList<>();
+        nonTrainStops = new ArrayList<>();
+        trainStops = new ArrayList<>();
     }
 
     public void loadStops ()
@@ -48,7 +54,7 @@ public class StopsLoader implements JSONRequest.NetworkListener
         String urlString = "http://dev-cloud.teardesign.com:3030/data/translink/stops?stops="
                             + Uri.encode(stopIds);
 
-        Log.d("JourneyLoader request: ", urlString);
+        Log.d("StopsLoader request: ", urlString);
         request = new JSONRequest();
         request.setListener(this);
         request.execute(urlString);
@@ -66,24 +72,29 @@ public class StopsLoader implements JSONRequest.NetworkListener
         {
             JSONObject stop = (JSONObject) stopsArray.get(i);
 
-            String stopID = (String) stop.get("Id");
+            String stopID = ((String) stop.get("StopId")).replaceFirst("^0+(?!$)", "");
             String name = (String) stop.get("Description");
             int type = ((Long) stop.get("ServiceType")).intValue();
 
             JSONObject latLng = (JSONObject) stop.get("Position");
             LatLng position = new LatLng((Double) latLng.get("Lat"), (Double) latLng.get("Lng"));
 
-            stops.add(new Stop(stopID, name, type, position));
+            if(type == 2)
+                trainStops.add(new Stop(stopID, name, type, position));
+            else
+                nonTrainStops.add(new Stop(stopID, name, type, position));
         }
 
-        addStopsMarkerToMap();
+        addNonTrainStopsMarkerToMap();
 
-        MainActivity.showProgressBar(false);
+        AccessibilityLoader accLoader = new AccessibilityLoader(trainStops, stopMarkers, map);
+        accLoader.loadStopsAccessibility();
     }
 
-    private void addStopsMarkerToMap()
+    private void addNonTrainStopsMarkerToMap()
     {
-        for(Stop stop : stops) {
+        for(Stop stop : nonTrainStops)
+        {
             int serviceType = stop.getServiceType();
 
             Marker m = map.addMarker(new MarkerOptions()
