@@ -23,8 +23,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.FilterQueryProvider;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.view.View.OnClickListener;
+import android.widget.ProgressBar;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -89,6 +89,8 @@ public class MainActivity extends AppCompatActivity implements
     static Calendar currentDate = Calendar.getInstance();
     static Calendar selectedDate = Calendar.getInstance();
 
+    static ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -144,6 +146,13 @@ public class MainActivity extends AppCompatActivity implements
 
         Button goButton = (Button) findViewById(R.id.go_button);
         goButton.setOnClickListener(this);
+
+        progressBar = (ProgressBar) findViewById(R.id.progress_spinner);
+    }
+
+    public static void showProgressBar(boolean visible)
+    {
+        progressBar.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
     }
 
     public void mapInit() {
@@ -235,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements
                 MatrixCursor locationMatrix = new MatrixCursor(columnLocations);
                 try
                 {
-                    String url = "http://abvincita.com/transmob/resolve.php?input="
+                    String url = "http://dev-cloud.teardesign.com:3030/data/translink/suggest?input="
                             + Uri.encode(constraint.toString())
                             + "&maxResults=" + Uri.encode("5");
 
@@ -308,13 +317,18 @@ public class MainActivity extends AppCompatActivity implements
                 requestParameters.add(1, destinationID);
                 requestParameters.add(2, date + " " + time);
 
+                JourneyLoader.removeAllLines();
+                StopsLoader.removeAllStopMarkers();
+
                 JourneyLoader loader = new JourneyLoader(
                             requestParameters.get(0),
                             requestParameters.get(1),
                             requestParameters.get(2),
                             mMap);
 
-                loader.requestPlan();
+                showProgressBar(true);
+
+                loader.loadJourney();
 
                 break;
         }

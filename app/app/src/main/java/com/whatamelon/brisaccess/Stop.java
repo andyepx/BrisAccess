@@ -13,19 +13,26 @@ import com.google.android.gms.maps.model.LatLng;
  */
 public class Stop
 {
+	enum Accessibility
+	{ Lift, Ramp, SteepRamp, Stairs }
+
 	private String stopId;
 	private int serviceType;
 	private LatLng position;
 	private String parentId;
 	private LatLng parentPosition;
 	private String description;
+	private Accessibility accessibility;
 	
-	public Stop (String stopId, String decription, String serviceType, LatLng position) {
+	public Stop (String stopId, String decription, int serviceType, LatLng position)
+	{
 		this.stopId = stopId;
-		this.serviceType = Integer.parseInt(serviceType);
+		this.serviceType = serviceType;
 		this.position = position;
 		this.parentId = "";
 		this.description = decription;
+
+		accessibility = Accessibility.Lift;
 	}
 
 	/**
