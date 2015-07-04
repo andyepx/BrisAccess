@@ -109,7 +109,8 @@ public class MainActivity extends AppCompatActivity implements
         SimpleCursorAdapter cursorAdapter = getSimpleCursorAdapter();
         destInput = (AutoCompleteTextView) findViewById(R.id.dest_input);
         destInput.setAdapter(cursorAdapter);
-        destInput.setThreshold(2);
+        destInput.setThreshold(3);
+        destInput.setOnItemClickListener(this);
 
         year = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH);
@@ -305,40 +306,21 @@ public class MainActivity extends AppCompatActivity implements
                 }
 
                 requestParameters.add(1, destinationID);
-                requestParameters.add(date + " " + time);
+                requestParameters.add(2, date + " " + time);
 
-                requestPlan(requestParameters.get(0),
+                JourneyLoader loader = new JourneyLoader(
+                            requestParameters.get(0),
                             requestParameters.get(1),
-                            requestParameters.get(2));
+                            requestParameters.get(2),
+                            mMap);
+
+                loader.requestPlan();
 
                 break;
         }
     }
 
-    private void requestPlan(String fromId, String destId, String date)
-    {
-        //showProgressBar(true);
 
-		/* Call our php code on web zone */
-        String urlString = "http://abvincita.com/transmob/journeyplan.php?fromLocId="
-                + Uri.encode(fromId) + "&destLocId=" + Uri.encode(destId) + "&date=" + Uri.encode(date)
-                + "&leaveOption=" + Uri.encode("0")
-                + "&vehicleTypes=" + Uri.encode("0")
-                + "&maxWalkDistance=" + Uri.encode("1000");
-        Log.d("JourneyMap request: ", urlString);
-        request = new JSONRequest();
-        request.setListener(this);
-        request.execute(urlString);
-
-        try {
-            String result = request.get();
-            Toast.makeText(this, result, Toast.LENGTH_LONG).show();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
