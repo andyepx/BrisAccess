@@ -42,15 +42,18 @@ class DataController < ActionController::Base
   def qr
 
   	station = params[:station]
+  	stationId = params[:sid]
 
-  	file = File.read(Rails.root.join('public', 'qr_accessibility.json'))
+  	file = File.read(Rails.root.join('public', 'qr_accessibility_2.json'))
   	data = JSON.parse(file)
 
   	return_data = []
 
-  	if station
+  	if station or stationId
 	  	data.each do |child|
-	  		if child['Station'].downcase.eql? station.downcase
+	  		if station and ( (child['Station'].downcase.include? station.downcase) or (station.downcase.include? child['Station'].downcase) )
+	    		return_data.push(child)
+	    	elsif stationId and child['stopIds'].include? stationId
 	    		return_data.push(child)
 	    	end
 		end
