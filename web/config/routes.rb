@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get 'data/qr' => 'data#qr'
   get 'data/areas' => 'data#areas'
   get 'data/ferries' => 'data#ferries'
+  get 'data/translink/travel' => 'translink#travel'
 
   # You can have the root of your site routed with "root"
   root 'application#index'
