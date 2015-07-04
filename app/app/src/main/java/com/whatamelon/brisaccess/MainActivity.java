@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements
                         showHelpActivity(getString(R.string.assist_title), getString(R.string.assist_content));
                         break;
                     case "WARNING: STAIRS":
-                        showHelpActivity(getString(R.string.assist_title), getString(R.string.assist_content));
+                        showHelpActivity(getString(R.string.stairs_title), getString(R.string.stairs_content));
                         break;
                     default:
                         break;

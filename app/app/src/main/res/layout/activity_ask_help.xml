@@ -58,7 +58,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:text="Call Queensland Rail Hotline"/>
+        android:text="Call Queensland Rail Hotline"
+        android:onClick="tapToCall" />
 
     <Button
         android:id="@+id/sms_button"
@@ -69,6 +70,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:text="SMS Queensland Rail"/>
+        android:text="SMS Queensland Rail"
+        android:onClick="sendSMS" />
 
 </LinearLayout>

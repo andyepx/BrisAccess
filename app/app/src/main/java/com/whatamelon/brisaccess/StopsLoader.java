@@ -87,8 +87,13 @@ public class StopsLoader implements JSONRequest.NetworkListener
 
         addNonTrainStopsMarkerToMap();
 
-        AccessibilityLoader accLoader = new AccessibilityLoader(trainStops, stopMarkers, map);
-        accLoader.loadStopsAccessibility();
+        if(!trainStops.isEmpty())
+        {
+            AccessibilityLoader accLoader = new AccessibilityLoader(trainStops, stopMarkers, map);
+            accLoader.loadStopsAccessibility();
+        }
+        else
+            MainActivity.showProgressBar(false);
     }
 
     private void addNonTrainStopsMarkerToMap()
