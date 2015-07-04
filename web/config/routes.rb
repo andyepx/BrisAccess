@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'data/ferries' => 'data#ferries'
   get 'data/translink/travel' => 'translink#travel'
   get 'data/translink/suggest' => 'translink#suggest'
+  get 'data/translink/stops' => 'translink#stops'
 
   # You can have the root of your site routed with "root"
   root 'application#index'

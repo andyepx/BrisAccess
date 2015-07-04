@@ -67,4 +67,30 @@ class TranslinkController < ActionController::Base
 
   end
 
+  def stops
+
+  	# required
+  	stops = params[:stops]
+  	stops = URI.escape(stops, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
+  	
+  	search_url = "https://opia.api.translink.com.au/v2/location/rest/stops?ids=#{stops}"
+
+	c = Curl::Easy.new(search_url) do |curl| 
+	  	curl.headers["Content-Type"] = "application/json"
+	  	curl.headers["Accept"] = "application/json"
+	  	curl.headers["X-HTTP-Method-Override"] = "GET"
+	  	curl.verbose = true
+	end
+	c.http_auth_types = :basic
+	c.username = 'christie.ethan'
+	c.password = '/6Y)=anqE2_x'
+	c.ssl_verify_peer = false
+	c.perform
+
+	puts c
+
+	render :json => c.body_str
+
+  end
+
 end
