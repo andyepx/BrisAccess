@@ -12,6 +12,6 @@
     <string name="stairs_title">This station has stairs access</string>
     <string name="stairs_content">The station has stairs access to the entry
         or to one or more of the platforms. You may not be able to access the station
-        even with assistance and you may need to find an alternative route. \n\n
+        even with assistance, in that case you may need to find an alternative route. \n\n
         Do you want to call or SMS Queensland Rail for assistance?</string>
 </resources>

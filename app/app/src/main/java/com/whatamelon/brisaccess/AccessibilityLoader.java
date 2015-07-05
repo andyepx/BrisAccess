@@ -22,12 +22,9 @@ public class AccessibilityLoader implements JSONRequest.NetworkListener
 {
     private ArrayList<Stop> trainStops;
     private ArrayList<Marker> stopMarkers;
+    private ArrayList<Stop> completeTrainStops;
     private JSONRequest request;
     private GoogleMap map;
-
-    private ArrayList<Stop> completeTrainStops;
-
-    private int[] markerIcons = { R.drawable.train_geo_border, R.drawable.warning_mark };
 
     public AccessibilityLoader (ArrayList<Stop> stops, ArrayList<Marker> markers, GoogleMap map)
     {
@@ -95,7 +92,7 @@ public class AccessibilityLoader implements JSONRequest.NetworkListener
                 .position(stop.getPosition())
                 .title(stop.getDescription())
                 .snippet("ASSIST REQUIRED")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.warning_mark)));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.assist_marker)));
 
         stopMarkers.add(m);
     }
@@ -106,7 +103,7 @@ public class AccessibilityLoader implements JSONRequest.NetworkListener
                 .position(stop.getPosition())
                 .title(stop.getDescription())
                 .snippet("WARNING: STAIRS")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.warning_mark)));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.stairs_marker)));
 
         stopMarkers.add(m);
     }
