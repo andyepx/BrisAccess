@@ -10,7 +10,7 @@ class DataController < ActionController::Base
   	category = params[:category]
   	rating = params[:rating]
 
-  	file = File.read(Rails.root.join('public', 'locations_accessibility.json'))
+  	file = File.read(Rails.root.join('public', 'locations_accessibility_2.json'))
   	data = JSON.parse(file)
 
   	return_data = []
@@ -31,11 +31,20 @@ class DataController < ActionController::Base
 		end
 	end
 
-  	if return_data.length > 0
-	  	render :json => return_data
-	else
-		render :json => data
+  	if return_data.length == 0
+	  	return_data = data
 	end
+
+	final = []
+
+	return_data.each do |d|
+		# puts d['category']
+  		if d['category'] and !(d['category'].downcase.include? 'transport')
+    		final.push(d)
+    	end
+	end
+
+	render :json => final
 
   end
 
@@ -71,10 +80,11 @@ class DataController < ActionController::Base
 
   	suburb = params[:suburb]
 
-  	file = File.read(Rails.root.join('public', 'suburbs_accessibility.json'))
+  	file = File.read(Rails.root.join('public', 'suburbs_accessibility_2.json'))
   	data = JSON.parse(file)
 
   	return_data = []
+  	existing_suburbs = []
 
   	if suburb
 	  	data.each do |child|
@@ -85,9 +95,23 @@ class DataController < ActionController::Base
 	end
 
   	if return_data.length > 0
-	  	render :json => return_data
+  		rdata = []
+  		return_data.each do |d|
+  			if not existing_suburbs.include? d['Suburb_Name']
+  				rdata.push(d)
+  				existing_suburbs.push(d['Suburb_Name'])
+  			end
+  		end
+	  	render :json => rdata
 	else
-		render :json => data
+		rdata = []
+  		data.each do |d|
+  			if not existing_suburbs.include? d['Suburb_Name']
+  				rdata.push(d)
+  				existing_suburbs.push(d['Suburb_Name'])
+  			end
+  		end
+	  	render :json => rdata
 	end
 
   end

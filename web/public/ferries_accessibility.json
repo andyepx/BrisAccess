@@ -1,7 +1,7 @@
 [
   {
     "id":1,
-    "Terminal Name":"Apollo Road ferry terminal",
+    "TerminalName":"Apollo Road ferry terminal",
     "Street":"Apollo Rd",
     "Location":"FS",
     "Cross Street":"Byron St",
@@ -17,7 +17,7 @@
   },
   {
     "id":2,
-    "Terminal Name":"Sydney Street ferry terminal",
+    "TerminalName":"Sydney Street ferry terminal",
     "Street":"Sydney St",
     "Location":"",
     "Cross Street":"Oxlade Dr",
@@ -33,7 +33,7 @@
   },
   {
     "id":3,
-    "Terminal Name":"Riverside ferry terminal",
+    "TerminalName":"Riverside ferry terminal",
     "Street":"Eagle St",
     "Location":"",
     "Cross Street":"Queen St",
@@ -49,7 +49,7 @@
   },
   {
     "id":4,
-    "Terminal Name":"Eagle Street Pier ferry terminal",
+    "TerminalName":"Eagle Street Pier ferry terminal",
     "Street":"Eagle St",
     "Location":"",
     "Cross Street":"Charlotte St",
@@ -65,7 +65,7 @@
   },
   {
     "id":5,
-    "Terminal Name":"QUT Gardens Point ferry terminal",
+    "TerminalName":"QUT Gardens Point ferry terminal",
     "Street":"Alice St",
     "Location":"",
     "Cross Street":"William St",
@@ -81,7 +81,7 @@
   },
   {
     "id":6,
-    "Terminal Name":"North Quay ferry terminal",
+    "TerminalName":"North Quay ferry terminal",
     "Street":"Queens Wharf Rd",
     "Location":"",
     "Cross Street":"Elizabeth St",
@@ -97,7 +97,7 @@
   },
   {
     "id":8,
-    "Terminal Name":"Regatta ferry terminal",
+    "TerminalName":"Regatta ferry terminal",
     "Street":"Coronation Dr",
     "Location":"",
     "Cross Street":"Sylvan Rd",
@@ -113,7 +113,7 @@
   },
   {
     "id":9,
-    "Terminal Name":"Guyatt Park ferry terminal",
+    "TerminalName":"Guyatt Park ferry terminal",
     "Street":"Macquarie St",
     "Location":"",
     "Cross Street":"Laurence St",
@@ -129,7 +129,7 @@
   },
   {
     "id":10,
-    "Terminal Name":"UQ St Lucia ferry terminal",
+    "TerminalName":"UQ St Lucia ferry terminal",
     "Street":"Sir William Macgregor Dr",
     "Location":"",
     "Cross Street":"Blair Dr",
@@ -145,7 +145,7 @@
   },
   {
     "id":11,
-    "Terminal Name":"West End ferry terminal",
+    "TerminalName":"West End ferry terminal",
     "Street":"Hoogley St",
     "Location":"AT",
     "Cross Street":"Orleigh St",
@@ -161,7 +161,7 @@
   },
   {
     "id":12,
-    "Terminal Name":"South Bank 1 ferry terminal",
+    "TerminalName":"South Bank 1 ferry terminal",
     "Street":"South Bank Boardwalk",
     "Location":"AT",
     "Cross Street":"South Bank Parklands",
@@ -177,7 +177,7 @@
   },
   {
     "id":13,
-    "Terminal Name":"South Bank 2 ferry terminal",
+    "TerminalName":"South Bank 2 ferry terminal",
     "Street":"South Bank Boardwalk",
     "Location":"AT",
     "Cross Street":"South Bank Parklands",
@@ -193,7 +193,7 @@
   },
   {
     "id":14,
-    "Terminal Name":"South Bank 3 ferry terminal",
+    "TerminalName":"South Bank 3 ferry terminal",
     "Street":"South Bank Boardwalk",
     "Location":"AT",
     "Cross Street":"South Bank Parklands",
@@ -209,7 +209,7 @@
   },
   {
     "id":15,
-    "Terminal Name":"Maritime Museum ferry terminal",
+    "TerminalName":"Maritime Museum ferry terminal",
     "Street":"Lower River Tce",
     "Location":"",
     "Cross Street":"Christie St",
@@ -225,7 +225,7 @@
   },
   {
     "id":16,
-    "Terminal Name":"Thornton Street ferry terminal",
+    "TerminalName":"Thornton Street ferry terminal",
     "Street":"Thornton St",
     "Location":"",
     "Cross Street":"Pixley St",
@@ -241,7 +241,7 @@
   },
   {
     "id":17,
-    "Terminal Name":"Holman Street ferry terminal",
+    "TerminalName":"Holman Street ferry terminal",
     "Street":"Holman St",
     "Location":"",
     "Cross Street":"Annie St",
@@ -257,7 +257,7 @@
   },
   {
     "id":18,
-    "Terminal Name":"Dockside ferry terminal",
+    "TerminalName":"Dockside ferry terminal",
     "Street":"Ferry St",
     "Location":"App",
     "Cross Street":"Dockside Ferry",
@@ -273,7 +273,7 @@
   },
   {
     "id":19,
-    "Terminal Name":"Mowbray ferry terminal",
+    "TerminalName":"Mowbray ferry terminal",
     "Street":"Park Av",
     "Location":"FS",
     "Cross Street":"Thorn St",
@@ -289,7 +289,7 @@
   },
   {
     "id":20,
-    "Terminal Name":"Hawthorne ferry terminal",
+    "TerminalName":"Hawthorne ferry terminal",
     "Street":"Gordon St",
     "Location":"Opp",
     "Cross Street":"Lindsay St",
@@ -305,7 +305,7 @@
   },
   {
     "id":21,
-    "Terminal Name":"Bulimba ferry terminal",
+    "TerminalName":"Bulimba ferry terminal",
     "Street":"Oxford St",
     "Location":"",
     "Cross Street":"Quay St",
@@ -321,7 +321,7 @@
   },
   {
     "id":22,
-    "Terminal Name":"Norman Park ferry terminal",
+    "TerminalName":"Norman Park ferry terminal",
     "Street":"Wynnum Rd",
     "Location":"",
     "Cross Street":"Norman Av",
@@ -337,7 +337,7 @@
   },
   {
     "id":23,
-    "Terminal Name":"Bretts Wharf ferry terminal",
+    "TerminalName":"Bretts Wharf ferry terminal",
     "Street":"Kingsford Smith Dr",
     "Location":"",
     "Cross Street":"Racecourse Rd",
@@ -353,7 +353,7 @@
   },
   {
     "id":24,
-    "Terminal Name":"Teneriffe ferry terminal",
+    "TerminalName":"Teneriffe ferry terminal",
     "Street":"Commercial Rd",
     "Location":"",
     "Cross Street":"Skyring Tce",
@@ -369,7 +369,7 @@
   },
   {
     "id":25,
-    "Terminal Name":"New Farm Park ferry terminal",
+    "TerminalName":"New Farm Park ferry terminal",
     "Street":"Brunswick St",
     "Location":"",
     "Cross Street":"Oxlade Dr",
@@ -385,7 +385,7 @@
   },
   {
     "id":26,
-    "Terminal Name":"Northshore Hamilton ferry terminal",
+    "TerminalName":"Northshore Hamilton ferry terminal",
     "Street":"Macarthur Av",
     "Location":"",
     "Cross Street":"Macarthur Av",
@@ -401,7 +401,7 @@
   },
   {
     "id":27,
-    "Terminal Name":"Milton",
+    "TerminalName":"Milton",
     "Street":"Coronation Dr",
     "Location":"Opp",
     "Cross Street":"Park Rd",
@@ -417,7 +417,7 @@
   },
   {
     "id":null,
-    "Terminal Name":"",
+    "TerminalName":"",
     "Street":"",
     "Location":"",
     "Cross Street":"",
@@ -433,7 +433,7 @@
   },
   {
     "id":null,
-    "Terminal Name":"",
+    "TerminalName":"",
     "Street":"",
     "Location":"",
     "Cross Street":"",

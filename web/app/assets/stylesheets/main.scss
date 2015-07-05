@@ -1,4 +1,6 @@
 
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,500,700,300);
+
 body, html {
 	border: 0;
 	margin: 0;
@@ -15,5 +17,23 @@ ui-gmap-google-map {
 		min-width: 400px;
 		max-height: 2000px;
 		height: 900px;
+	}
+}
+
+.sidemenu {
+	width: 30%;
+	height: 40%;
+	background: #fff;
+	border: 1px solid #eee;
+	position: absolute;
+	right: 30px;
+	top: 30px;
+	box-sizing: border-box;
+	padding: 30px;
+	font-family: Roboto;
+
+	img {
+		margin-top: 10px;
+		max-width: 40px;
 	}
 }

@@ -1,10 +1,66 @@
 <div style="width: 100%; height: 100%; background: black">
-	<ui-gmap-google-map center='map.center' zoom='map.zoom' options="map.options"></ui-gmap-google-map>
+	<ui-gmap-google-map center='map.center' zoom='map.zoom' options="map.options">
+	    <ui-gmap-markers models='transportMarkers'  coords="'self'" click="clickMarkerTransport" icon="'icon'"></ui-gmap-markers>
+	    <ui-gmap-markers models='restaurantMarkers' coords="'self'" click="clickMarkerRestaurant" icon="'icon'"></ui-gmap-markers>
+	    <ui-gmap-markers models='suburbsMarkers' coords="'self'" click="clickMarkerArea" icon="'icon'"></ui-gmap-markers>
+	    <ui-gmap-markers models='selectedPin' coords="'self'" icon="'icon'"></ui-gmap-markers>
+	</ui-gmap-google-map>
 </div>
 
-<nav mfb-menu position="tl" effect="slidein-spring" label="Show options" active-icon="fa fa-edit" resting-icon="fa fa-plus" toggling-method="hover">
-	<button mfb-button icon="fa fa-globe" label="Areas"></button>
-	<button mfb-button icon="fa fa-cutlery" label="Cafes and Restaurants"></button>
-	<button mfb-button icon="fa fa-train" label="Public transport station"></button>
-	<button mfb-button icon="fa fa-futbol-o" label="Public transport station"></button>
+<nav mfb-menu position="tl" effect="slidein-spring" label="Show options" active-icon="fa fa-chevron-down" resting-icon="fa fa-list" toggling-method="hover">
+	<button mfb-button icon="fa fa-globe" label="Suburbs" ng-click="toggleSuburbData()"></button>
+	<button mfb-button icon="fa fa-cutlery" label="Cafes and Restaurants" ng-click="toggleRestaurantData()"></button>
+	<button mfb-button icon="fa fa-train" label="Public transport station" ng-click="toggleTransportData()"></button>
+</nav>
+
+<nav class="sidemenu">
+
+	<angucomplete id="searchbar"
+              placeholder="Search anything"
+              pause="100"
+              selectedobject="selectedData"
+              localdata="allSearchData"
+              searchfields="title"
+              titlefield="title"
+              minlength="1"
+              inputclass="form-control form-control-small"> </angucomplete>
+	
+	<span ng-show="showingTransport">
+		<h2 style="background: url(/images/icons/{{details.Station_access}}.png) no-repeat; padding-left: {{details.Station_access ? '50px' : '0'}}; background-size: contain; line-height: 40px;"><!-- <img src="/images/icons/{{details.Station_access}}.png" /> --> <span>{{details.Station}}{{details.TerminalName}}</span></h2>
+		<span><img src="/images/icons/{{details.Accessible_parking != '0' ? 'icons-web-31.png' : 'icons-web-24.png'}}" /></span>
+		<span><img src="/images/icons/{{details.Accessible_toilet != '0' ? 'icons-web-30.png' : 'icons-web-23.png'}}" /></span>
+		<span><img src="/images/icons/{{details.Hearing_loops != '0' ? 'icons-web-29.png' : 'icons-web-22.png'}}" /></span>
+		<span><img src="/images/icons/{{details.Help_phones != '0' ? 'icons-web-26.png' : 'icons-web-19.png'}}" /></span>
+	</span>
+
+	<span ng-show="showingRestaurant">
+		<h2>{{details.location}}</h2>
+		<span>{{details.address}}</span><br><br>
+		<span><i class="fa fa-star" ng-repeat="r in getRating(details)"></i></span>
+	</span>
+
+	<span ng-show="showingSuburb">
+		<h2>{{details.Suburb_Name}}</h2>
+		<span>{{details.metroarian}}</span><br>
+		<span>
+			<img src="/images/icons/icons-web-34.png" ng-show="details.ma_hlth == 1" />
+			<img src="/images/icons/icons-web-37.png" ng-show="details.ma_hlth > 1 && details.ma_hlth < 4" />
+			<img src="/images/icons/icons-web-40.png" ng-show="details.ma_hlth == 4"/></span>
+		<span>
+			<img src="/images/icons/icons-web-35.png" ng-show="details.ma_ptransn == 1 " />
+			<img src="/images/icons/icons-web-38.png" ng-show="details.ma_ptransn > 1 && details.ma_ptransn < 4" />
+			<img src="/images/icons/icons-web-41.png" ng-show="details.ma_ptransn == 4"/></span>
+		<span>
+			<img src="/images/icons/icons-web-36.png" ng-show="details.ma_fpost == 1" />
+			<img src="/images/icons/icons-web-39.png" ng-show="details.ma_fpost > 1 && details.ma_fpost < 4" />
+			<img src="/images/icons/icons-web-42.png" ng-show="details.ma_fpost == 4"/></span>
+		<span>
+			<img src="/images/icons/icons-web-32.png" ng-show="details.ma_shop == 1" />
+			<img src="/images/icons/icons-web-25.png" ng-show="details.ma_shop > 1 && details.ma_shop < 4" />
+			<img src="/images/icons/icons-web-33.png" ng-show="details.ma_shop == 4"/></span>
+		<span>
+			<img src="/images/icons/icons-web-43.png" ng-show="details.ma_edu == 1" />
+			<img src="/images/icons/icons-web-44.png" ng-show="details.ma_edu > 1 && details.ma_edu < 4" />
+			<img src="/images/icons/icons-web-45.png" ng-show="details.ma_edu == 4"/></span>
+	</span>
 </nav>
