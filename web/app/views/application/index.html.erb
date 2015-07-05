@@ -24,6 +24,10 @@
               titlefield="title"
               minlength="1"
               inputclass="form-control form-control-small"> </angucomplete>
+
+    <span ng-hide="showingTransport || showingRestaurant || showingSuburb">
+    	<br>Search for a suburb, a hotel, a restaurant, a train, ferry or bus stop to find out how accessible they are and which services they offer to people with disabilities. <br><br> Use our map explore tool, in the top left corner, to explore the Brisbane map and find out more about the accessibility of our city!
+    </span>
 	
 	<span ng-show="showingTransport">
 		<h2 style="background: url(/images/icons/{{details.Station_access}}.png) no-repeat; padding-left: {{details.Station_access ? '50px' : '0'}}; background-size: contain; line-height: 40px;"><!-- <img src="/images/icons/{{details.Station_access}}.png" /> --> <span>{{details.Station}}{{details.TerminalName}}</span></h2>
@@ -63,4 +67,6 @@
 			<img src="/images/icons/icons-web-44.png" ng-show="details.ma_edu > 1 && details.ma_edu < 4" />
 			<img src="/images/icons/icons-web-45.png" ng-show="details.ma_edu == 4"/></span>
 	</span>
+
+	<span></span>
 </nav>
