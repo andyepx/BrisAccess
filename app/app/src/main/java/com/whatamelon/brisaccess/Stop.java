@@ -13,8 +13,8 @@ import com.google.android.gms.maps.model.LatLng;
  */
 public class Stop
 {
-	enum Accessibility
-	{ Lift, Ramp, SteepRamp, Stairs }
+	public enum Accessibility
+	{ Independent, Assist, Stairs }
 
 	private String stopId;
 	private int serviceType;
@@ -23,6 +23,7 @@ public class Stop
 	private LatLng parentPosition;
 	private String description;
 	private Accessibility accessibility;
+	private boolean helpPhoneExists;
 	
 	public Stop (String stopId, String decription, int serviceType, LatLng position)
 	{
@@ -32,7 +33,40 @@ public class Stop
 		this.parentId = "";
 		this.description = decription;
 
-		accessibility = Accessibility.Lift;
+		accessibility = Accessibility.Stairs;
+		helpPhoneExists = false;
+	}
+
+	public Stop (String stopId, String decription, int serviceType, LatLng position, Accessibility a, boolean isExist)
+	{
+		this.stopId = stopId;
+		this.serviceType = serviceType;
+		this.position = position;
+		this.parentId = "";
+		this.description = decription;
+
+		accessibility = a;
+		helpPhoneExists = isExist;
+	}
+
+	public void setAccessibility (Accessibility a)
+	{
+		accessibility = a;
+	}
+
+	public Accessibility getAccessibility()
+	{
+		return accessibility;
+	}
+
+	public void setHelpPhoneExists (boolean isExist)
+	{
+		helpPhoneExists = isExist;
+	}
+
+	public boolean isHelpPhoneExists()
+	{
+		return helpPhoneExists;
 	}
 
 	/**
