@@ -37,6 +37,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements
         OnItemClickListener
 {
     public static final String TAG = "BrisAccess";
+    public static final String HELP_ICON = "ICON";
     public static final String HELP_TITLE = "TITLE";
     public static final String HELP_CONTENT = "CONTENT";
 
@@ -186,10 +188,14 @@ public class MainActivity extends AppCompatActivity implements
                 switch (snippet)
                 {
                     case "ASSIST REQUIRED":
-                        showHelpActivity(getString(R.string.assist_title), getString(R.string.assist_content));
+                        showHelpActivity(R.drawable.assist_icon,
+                                         R.string.assist_title,
+                                         R.string.assist_content);
                         break;
                     case "WARNING: STAIRS":
-                        showHelpActivity(getString(R.string.stairs_title), getString(R.string.stairs_content));
+                        showHelpActivity(R.drawable.stairs_icon,
+                                         R.string.stairs_title,
+                                         R.string.stairs_content);
                         break;
                     default:
                         break;
@@ -199,11 +205,12 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-    public void showHelpActivity (String title, String content)
+    public void showHelpActivity (int iconId, int titleId, int contentId)
     {
         Intent intent = new Intent(this, AskHelpActivity.class);
-        intent.putExtra(HELP_TITLE, title);
-        intent.putExtra(HELP_CONTENT, content);
+        intent.putExtra(HELP_ICON, iconId);
+        intent.putExtra(HELP_TITLE, getString(titleId));
+        intent.putExtra(HELP_CONTENT, getString(contentId));
         startActivity(intent);
     }
 

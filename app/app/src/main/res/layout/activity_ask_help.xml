@@ -11,11 +11,12 @@
         layout="@layout/toolbar" />
 
     <ImageView
-        android:src="@drawable/warning_icon"
+        android:id="@+id/help_icon"
+        android:src="@drawable/assist_icon"
         android:layout_gravity="center_horizontal"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp" />
 
     <TextView
         android:id="@+id/help_title"
@@ -27,7 +28,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@android:color/black"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"/>
 
@@ -40,7 +41,7 @@
         android:text="This station has steep ramp"
         android:textSize="16sp"
         android:textColor="@android:color/black"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"/>
 
