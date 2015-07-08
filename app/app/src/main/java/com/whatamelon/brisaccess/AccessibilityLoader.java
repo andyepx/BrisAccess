@@ -21,18 +21,32 @@ import java.util.ArrayList;
 public class AccessibilityLoader implements JSONRequest.NetworkListener
 {
     private ArrayList<Stop> trainStops;
-    private ArrayList<Marker> stopMarkers;
-    private ArrayList<Stop> completeTrainStops;
     private JSONRequest request;
     private GoogleMap map;
+    private static ArrayList<Marker> stopMarkers;
+
+    public AccessibilityLoader (GoogleMap map)
+    {
+        this.trainStops = new ArrayList<>();
+        this.stopMarkers = new ArrayList<>();
+        this.map = map;
+    }
 
     public AccessibilityLoader (ArrayList<Stop> stops, ArrayList<Marker> markers, GoogleMap map)
     {
         this.trainStops = stops;
         this.stopMarkers = markers;
         this.map = map;
+    }
 
-        completeTrainStops = new ArrayList<>();
+    public void loadAllTrainStationsAccessibility()
+    {
+        String urlString = "http://dev-cloud.teardesign.com:3030/data/qr";
+
+        Log.d("Accessibility request: ", urlString);
+        request = new JSONRequest();
+        request.setListener(this);
+        request.execute(urlString);
     }
 
     public void loadStopsAccessibility()
@@ -52,36 +66,38 @@ public class AccessibilityLoader implements JSONRequest.NetworkListener
     @Override
     public void networkRequestCompleted(String result)
     {
-        JSONArray raw = (JSONArray) JSONValue.parse(result);
-        JSONObject obj = (JSONObject) raw.get(0);
+        JSONArray resultsArray = (JSONArray) JSONValue.parse(result);
 
-        String stopID = (String) obj.get("stationid");
-        String stationName = obj.get("Station") + " Station";
-        int accessibility = ((Long) obj.get("Station_access")).intValue();
-        boolean helpPhoneExists = Integer.parseInt((String) obj.get("Help_phones")) == 1;
-
-        JSONObject latLng = (JSONObject) obj.get("position");
-        LatLng position = new LatLng((Double) latLng.get("Lat"), (Double) latLng.get("Lng"));
-
-        Stop completeStop;
-
-        switch (accessibility)
+        for (int i = 0; i < resultsArray.size(); i++)
         {
-            case 3: //Lift
-                completeStop = new Stop(stopID, stationName, 2, position, Stop.Accessibility.Independent, helpPhoneExists);
-                addTrainMarker(completeStop);
-                break;
-            case 1: //Assist
-                completeStop = new Stop(stopID, stationName, 2, position, Stop.Accessibility.Assist, helpPhoneExists);
-                addAssistMarker(completeStop);
-                break;
-            default: //Stairs (or worse)
-                completeStop = new Stop(stopID, stationName, 2, position, Stop.Accessibility.Stairs, helpPhoneExists);
-                addStairsMarker(completeStop);
-                break;
-        }
+            JSONObject obj = (JSONObject) resultsArray.get(i);
 
-        completeTrainStops.add(completeStop);
+            String stopID = (String) obj.get("stationid");
+            String stationName = obj.get("Station") + " Station";
+            int accessibility = ((Long) obj.get("Station_access")).intValue();
+            boolean helpPhoneExists = Integer.parseInt((String) obj.get("Help_phones")) == 1;
+
+            JSONObject latLng = (JSONObject) obj.get("position");
+            LatLng position = new LatLng((Double) latLng.get("Lat"), (Double) latLng.get("Lng"));
+
+            Stop completeStop;
+
+            switch (accessibility)
+            {
+                case 3: //Lift
+                    completeStop = new Stop(stopID, stationName, 2, position, Stop.Accessibility.Independent, helpPhoneExists);
+                    addTrainMarker(completeStop);
+                    break;
+                case 1: //Assist
+                    completeStop = new Stop(stopID, stationName, 2, position, Stop.Accessibility.Assist, helpPhoneExists);
+                    addAssistMarker(completeStop);
+                    break;
+                default: //Stairs (or worse)
+                    completeStop = new Stop(stopID, stationName, 2, position, Stop.Accessibility.Stairs, helpPhoneExists);
+                    addStairsMarker(completeStop);
+                    break;
+            }
+        }
 
         MainActivity.showProgressBar(false);
     }
@@ -113,8 +129,20 @@ public class AccessibilityLoader implements JSONRequest.NetworkListener
         Marker m = map.addMarker(new MarkerOptions()
                 .position(stop.getPosition())
                 .title(stop.getDescription())
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.train_geo_border)));
+                .snippet("Lift available")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.lift_marker)));
 
         stopMarkers.add(m);
+    }
+
+    public static void removeAllStopMarkers()
+    {
+        for(Marker m : stopMarkers)
+        {
+            m.setVisible(false);
+            m.remove();
+        }
+
+        stopMarkers.clear();
     }
 }
