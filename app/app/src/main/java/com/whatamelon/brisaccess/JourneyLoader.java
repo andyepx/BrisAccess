@@ -80,7 +80,6 @@ public class JourneyLoader implements JSONRequest.NetworkListener
                 String code = type == 8 ? (String) route.get("Name") : (String) route.get("Code");
                 String time = (String) leg.get("DepartureTime");
                 Date departureTime = new Date(Long.parseLong(time.substring(6, 18) )*10);
-
                 Route journeyRoute = new Route (code, departureTime, type);
                 legsList.add(new Leg(poly, fromStop, toStop, journeyRoute));
             }

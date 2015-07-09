@@ -88,7 +88,13 @@ public class StopsLoader implements JSONRequest.NetworkListener
             LatLng position = new LatLng((Double) latLng.get("Lat"), (Double) latLng.get("Lng"));
 
             if(type == 2)
-                trainStops.add(new Stop(stopID, name, type, position, routes[i]));
+            {
+                Stop trainStop = new Stop(stopID, name, type, position, routes[i]);
+                String parentId = (String) ((JSONObject) stop.get("ParentLocation")).get("Id");
+                trainStop.setParentId(parentId);
+
+                trainStops.add(trainStop);
+            }
             else
                 nonTrainStops.add(new Stop(stopID, name, type, position, routes[i]));
         }
@@ -111,7 +117,7 @@ public class StopsLoader implements JSONRequest.NetworkListener
             int serviceType = stop.getServiceType();
             Route route = stop.getRoute();
 
-            String snippet = "";
+            String snippet = null;
             if(route != null)
             {
                 snippet = route.getRouteCode() + " at " + (new SimpleDateFormat("HH:mm").format(route.getDepartureTime()));

@@ -13,7 +13,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by abvincita on 4/07/2015.
@@ -21,15 +23,18 @@ import java.util.ArrayList;
 public class AccessibilityLoader implements JSONRequest.NetworkListener
 {
     private ArrayList<Stop> trainStops;
+    private HashMap<String, Route> stopRouteHashMap;
     private JSONRequest request;
     private GoogleMap map;
     private static ArrayList<Marker> stopMarkers;
 
     public AccessibilityLoader (GoogleMap map)
     {
-        this.trainStops = new ArrayList<>();
-        this.stopMarkers = new ArrayList<>();
         this.map = map;
+
+        trainStops = new ArrayList<>();
+        stopMarkers = new ArrayList<>();
+        stopRouteHashMap = new HashMap<>();
     }
 
     public AccessibilityLoader (ArrayList<Stop> stops, ArrayList<Marker> markers, GoogleMap map)
@@ -37,6 +42,8 @@ public class AccessibilityLoader implements JSONRequest.NetworkListener
         this.trainStops = stops;
         this.stopMarkers = markers;
         this.map = map;
+
+        stopRouteHashMap = new HashMap<>();
     }
 
     public void loadAllTrainStationsAccessibility()
@@ -53,6 +60,8 @@ public class AccessibilityLoader implements JSONRequest.NetworkListener
     {
         for(Stop stop : trainStops)
         {
+            stopRouteHashMap.put(stop.getParentId(), stop.getRoute());
+
             String urlString = "http://dev-cloud.teardesign.com:3030/data/qr?sid="
                     + Uri.encode(stop.getId());
 
@@ -79,21 +88,21 @@ public class AccessibilityLoader implements JSONRequest.NetworkListener
 
             JSONObject latLng = (JSONObject) obj.get("position");
             LatLng position = new LatLng((Double) latLng.get("Lat"), (Double) latLng.get("Lng"));
+            Route route = stopRouteHashMap.isEmpty() ? null : stopRouteHashMap.get(stopID);
 
             Stop completeStop;
 
-            switch (accessibility)
-            {
+            switch (accessibility) {
                 case 3: //Lift
-                    completeStop = new Stop(stopID, stationName, 2, position, Stop.Accessibility.Independent, helpPhoneExists);
+                    completeStop = new Stop(stopID, stationName, 2, position, Stop.Accessibility.Independent, helpPhoneExists, route);
                     addTrainMarker(completeStop);
                     break;
                 case 1: //Assist
-                    completeStop = new Stop(stopID, stationName, 2, position, Stop.Accessibility.Assist, helpPhoneExists);
+                    completeStop = new Stop(stopID, stationName, 2, position, Stop.Accessibility.Assist, helpPhoneExists, route);
                     addAssistMarker(completeStop);
                     break;
                 default: //Stairs (or worse)
-                    completeStop = new Stop(stopID, stationName, 2, position, Stop.Accessibility.Stairs, helpPhoneExists);
+                    completeStop = new Stop(stopID, stationName, 2, position, Stop.Accessibility.Stairs, helpPhoneExists, route);
                     addStairsMarker(completeStop);
                     break;
             }
@@ -104,10 +113,12 @@ public class AccessibilityLoader implements JSONRequest.NetworkListener
 
     private void addAssistMarker(Stop stop)
     {
+        String trainCodeAndTime = trainCodeAndTimeGenerator(stop.getRoute());
+
         Marker m = map.addMarker(new MarkerOptions()
                 .position(stop.getPosition())
                 .title(stop.getDescription())
-                .snippet("ASSIST REQUIRED")
+                .snippet(trainCodeAndTime + "ASSIST REQUIRED")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.assist_marker)));
 
         stopMarkers.add(m);
@@ -115,10 +126,12 @@ public class AccessibilityLoader implements JSONRequest.NetworkListener
 
     private void addStairsMarker(Stop stop)
     {
+        String trainCodeAndTime = trainCodeAndTimeGenerator(stop.getRoute());
+
         Marker m = map.addMarker(new MarkerOptions()
                 .position(stop.getPosition())
                 .title(stop.getDescription())
-                .snippet("WARNING: STAIRS")
+                .snippet(trainCodeAndTime + "WARNING: STAIRS")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.stairs_marker)));
 
         stopMarkers.add(m);
@@ -126,10 +139,12 @@ public class AccessibilityLoader implements JSONRequest.NetworkListener
 
     private void addTrainMarker(Stop stop)
     {
+        String trainCodeAndTime = trainCodeAndTimeGenerator(stop.getRoute());
+
         Marker m = map.addMarker(new MarkerOptions()
                 .position(stop.getPosition())
                 .title(stop.getDescription())
-                .snippet("Lift available")
+                .snippet(trainCodeAndTime + "Lift available")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.lift_marker)));
 
         stopMarkers.add(m);
@@ -144,5 +159,25 @@ public class AccessibilityLoader implements JSONRequest.NetworkListener
         }
 
         stopMarkers.clear();
+    }
+
+    private String trainCodeAndTimeGenerator(Route route)
+    {
+        String trainCodeAndTime = "";
+        if(route != null)
+        {
+            String trainName = route.getRouteCode();
+            String[] getTo = trainName.split(" to ");
+            String destination = getTo[1];
+            if(destination.contains(" - "))
+            {
+                destination = destination.split(" - ")[0];
+            }
+
+            trainCodeAndTime = destination + " line at " +
+                               (new SimpleDateFormat("HH:mm").format(route.getDepartureTime()) + " - ");
+        }
+
+        return trainCodeAndTime;
     }
 }

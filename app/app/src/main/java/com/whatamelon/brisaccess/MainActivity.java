@@ -180,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 15));
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setMapToolbarEnabled(false);
 
         mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener()
         {
@@ -259,8 +260,6 @@ public class MainActivity extends AppCompatActivity implements
     {
         userLatLng = new LatLng(location.getLatitude(),
                 location.getLongitude());
-
-        userLatLng = DEFAULT_LOCATION;
 
         userMarker = mMap.addMarker(new MarkerOptions()
                 .position(DEFAULT_LOCATION)

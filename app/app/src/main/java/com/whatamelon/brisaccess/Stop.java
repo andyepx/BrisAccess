@@ -24,20 +24,7 @@ public class Stop
 	private String description;
 	private Accessibility accessibility;
 	private boolean helpPhoneExists;
-
-	Route route;
-	
-	public Stop (String stopId, String decription, int serviceType, LatLng position)
-	{
-		this.stopId = stopId;
-		this.serviceType = serviceType;
-		this.position = position;
-		this.parentId = "";
-		this.description = decription;
-
-		accessibility = Accessibility.Stairs;
-		helpPhoneExists = false;
-	}
+	private Route route;
 
     public Stop (String stopId, String decription, int serviceType, LatLng position, Route route)
     {
@@ -52,17 +39,23 @@ public class Stop
         helpPhoneExists = false;
     }
 
-	public Stop (String stopId, String decription, int serviceType, LatLng position, Accessibility a, boolean isExist)
+	public Stop (String stopId, String decription, int serviceType, LatLng position, Accessibility a, boolean isExist, Route route)
 	{
 		this.stopId = stopId;
 		this.serviceType = serviceType;
 		this.position = position;
 		this.parentId = "";
 		this.description = decription;
+        this.route = route;
 
 		accessibility = a;
 		helpPhoneExists = isExist;
 	}
+
+    public void setParentId (String id)
+    {
+        parentId = id;
+    }
 
     public void setRoute (Route legRoute)
     {
