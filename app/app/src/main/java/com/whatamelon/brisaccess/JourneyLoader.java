@@ -13,6 +13,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by abvincita on 4/07/2015.
@@ -72,7 +73,19 @@ public class JourneyLoader implements JSONRequest.NetworkListener
             String fromStop = (String) leg.get("FromStopId");
             String toStop = (String) leg.get("ToStopId");
 
-            legsList.add(new Leg(poly, fromStop, toStop));
+            JSONObject route = (JSONObject) leg.get("Route");
+            if (route != null && !route.isEmpty())
+            {
+                int type = ((Long) route.get("Vehicle")).intValue();
+                String code = type == 8 ? (String) route.get("Name") : (String) route.get("Code");
+                String time = (String) leg.get("DepartureTime");
+                Date departureTime = new Date(Long.parseLong(time.substring(6, 18) )*10);
+
+                Route journeyRoute = new Route (code, departureTime, type);
+                legsList.add(new Leg(poly, fromStop, toStop, journeyRoute));
+            }
+            else
+                legsList.add(new Leg(poly, fromStop, toStop));
 
             addLineToMap(poly);
         }

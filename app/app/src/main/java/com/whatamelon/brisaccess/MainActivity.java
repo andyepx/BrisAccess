@@ -260,6 +260,8 @@ public class MainActivity extends AppCompatActivity implements
         userLatLng = new LatLng(location.getLatitude(),
                 location.getLongitude());
 
+        userLatLng = DEFAULT_LOCATION;
+
         userMarker = mMap.addMarker(new MarkerOptions()
                 .position(DEFAULT_LOCATION)
                 .title("Current location")
