@@ -154,6 +154,8 @@ public class MainActivity extends AppCompatActivity implements
                 .addOnConnectionFailedListener(this)
                 .build();
 
+        googleApiClient.connect();
+
         showProgressBar(true);
         mapInit();
         AccessibilityLoader accessibilityLoader = new AccessibilityLoader(mMap);
@@ -189,22 +191,18 @@ public class MainActivity extends AppCompatActivity implements
             {
                 String snippet = marker.getSnippet();
 
-                switch (snippet)
+                if (snippet.contains("ASSIST REQUIRED"))
                 {
-                    case "ASSIST REQUIRED":
-                        showHelpActivity(R.drawable.assist_icon,
-                                         R.string.assist_title,
-                                         R.string.assist_content);
-                        break;
-                    case "WARNING: STAIRS":
-                        showHelpActivity(R.drawable.stairs_icon,
-                                         R.string.stairs_title,
-                                         R.string.stairs_content);
-                        break;
-                    default:
-                        break;
+                    showHelpActivity(R.drawable.assist_icon,
+                            R.string.assist_title,
+                            R.string.assist_content);
                 }
-
+                else if (snippet.contains("WARNING: STAIRS"))
+                {
+                    showHelpActivity(R.drawable.stairs_icon,
+                            R.string.stairs_title,
+                            R.string.stairs_content);
+                }
             }
         });
     }
@@ -216,13 +214,6 @@ public class MainActivity extends AppCompatActivity implements
         intent.putExtra(HELP_TITLE, getString(titleId));
         intent.putExtra(HELP_CONTENT, getString(contentId));
         startActivity(intent);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // Connect the client.
-        googleApiClient.connect();
     }
 
     @Override
