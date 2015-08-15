@@ -30,8 +30,8 @@ class TranslinkController < ActionController::Base
 	  	curl.verbose = true
 	end
 	c.http_auth_types = :basic
-	c.username = 'christie.ethan'
-	c.password = '/6Y)=anqE2_x'
+	c.username = ''
+	c.password = ''
 	c.ssl_verify_peer = false
 	c.perform
 
