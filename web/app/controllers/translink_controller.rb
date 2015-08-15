@@ -1,5 +1,5 @@
 class TranslinkController < ActionController::Base
-  
+
 
   def travel
 
@@ -7,7 +7,7 @@ class TranslinkController < ActionController::Base
   	from 					= params[:from]
   	to 						= params[:to]
   	at 						= params[:at]
-  	
+
   	# not required
   	timeMode 				= params[:timeMode].present? 			? params[:timeMode] 				: "0"
   	vehicleTypes 			= params[:vehicleTypes].present? 			? params[:vehicleTypes] 			: "0"
@@ -20,10 +20,10 @@ class TranslinkController < ActionController::Base
   	from = URI.escape(from, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
   	to = URI.escape(to, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
   	at = URI.escape(at, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
-  	
+
   	search_url = "https://opia.api.translink.com.au/v2/travel/rest/plan/"+from+"/"+to+"?timeMode=0&at="+at+"&walkSpeed=0&maximumWalkingDistanceM=2000"
 
-	c = Curl::Easy.new(search_url) do |curl| 
+	c = Curl::Easy.new(search_url) do |curl|
 	  	curl.headers["Content-Type"] = "application/json"
 	  	curl.headers["Accept"] = "application/json"
 	  	curl.headers["X-HTTP-Method-Override"] = "GET"
@@ -46,18 +46,18 @@ class TranslinkController < ActionController::Base
   	# required
   	input = params[:input]
   	input = URI.escape(input, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
-  	
+
   	search_url = "https://opia.api.translink.com.au/v2/location/rest/suggest?input=#{input}&filter=0&maxResults=5"
 
-	c = Curl::Easy.new(search_url) do |curl| 
+	c = Curl::Easy.new(search_url) do |curl|
 	  	curl.headers["Content-Type"] = "application/json"
 	  	curl.headers["Accept"] = "application/json"
 	  	curl.headers["X-HTTP-Method-Override"] = "GET"
 	  	curl.verbose = true
 	end
 	c.http_auth_types = :basic
-	c.username = 'christie.ethan'
-	c.password = '/6Y)=anqE2_x'
+	c.username = ''
+	c.password = ''
 	c.ssl_verify_peer = false
 	c.perform
 
@@ -72,18 +72,18 @@ class TranslinkController < ActionController::Base
   	# required
   	stops = params[:stops]
   	stops = URI.escape(stops, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
-  	
+
   	search_url = "https://opia.api.translink.com.au/v2/location/rest/stops?ids=#{stops}"
 
-	c = Curl::Easy.new(search_url) do |curl| 
+	c = Curl::Easy.new(search_url) do |curl|
 	  	curl.headers["Content-Type"] = "application/json"
 	  	curl.headers["Accept"] = "application/json"
 	  	curl.headers["X-HTTP-Method-Override"] = "GET"
 	  	curl.verbose = true
 	end
 	c.http_auth_types = :basic
-	c.username = 'christie.ethan'
-	c.password = '/6Y)=anqE2_x'
+	c.username = ''
+	c.password = ''
 	c.ssl_verify_peer = false
 	c.perform
 
