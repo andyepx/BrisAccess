@@ -10,3 +10,4 @@
 /app/captures
 /app/APKs/
 /app/Screenshots/
+web/app/controllers/translink_controller.rb
