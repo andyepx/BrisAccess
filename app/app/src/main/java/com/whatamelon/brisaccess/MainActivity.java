@@ -267,6 +267,8 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onLocationChanged(Location location)
     {
+        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+
         userLatLng = new LatLng(location.getLatitude(),location.getLongitude());
         refreshUserMarker(userLatLng);
     }
@@ -276,8 +278,6 @@ public class MainActivity extends AppCompatActivity implements
         userMarker.setPosition(newPosition);
         userMarker.setVisible(true);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(newPosition, 15));
-
-        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
     }
 
     private SimpleCursorAdapter getSimpleCursorAdapter()
