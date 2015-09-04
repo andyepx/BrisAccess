@@ -37,12 +37,12 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -185,6 +185,12 @@ public class MainActivity extends AppCompatActivity implements
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(false);
 
+        userMarker = mMap.addMarker(new MarkerOptions()
+                .position(DEFAULT_LOCATION)
+                .title("Current location")
+                .visible(false)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_geo_border)));
+
         mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener()
         {
             @Override
@@ -204,6 +210,17 @@ public class MainActivity extends AppCompatActivity implements
                             R.string.stairs_title,
                             R.string.stairs_content);
                 }
+            }
+        });
+
+        mMap.setOnMapClickListener(new OnMapClickListener()
+        {
+            @Override
+            public void onMapClick(LatLng arg0)
+            {
+                //When the map is tapped, update userLatLng and refresh user marker's position.
+                userLatLng = arg0;
+                refreshUserMarker(userLatLng);
             }
         });
     }
@@ -226,8 +243,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onConnected(Bundle bundle) {
-
+    public void onConnected(Bundle bundle)
+    {
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(1000); // Update location every second
@@ -250,19 +267,15 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onLocationChanged(Location location)
     {
-        userLatLng = new LatLng(location.getLatitude(),
-                location.getLongitude());
+        userLatLng = new LatLng(location.getLatitude(),location.getLongitude());
+        refreshUserMarker(userLatLng);
+    }
 
-        userMarker = mMap.addMarker(new MarkerOptions()
-                .position(DEFAULT_LOCATION)
-                .title("Current location")
-                .visible(false)
-                .icon(BitmapDescriptorFactory
-                        .fromResource(R.drawable.location_geo_border)));
-
+    private void refreshUserMarker(LatLng newPosition)
+    {
+        userMarker.setPosition(newPosition);
         userMarker.setVisible(true);
-        userMarker.setPosition(userLatLng);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 15));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(newPosition, 15));
 
         LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
     }
