@@ -170,6 +170,7 @@ public class MainActivity extends AppCompatActivity implements
     public void mapInit()
     {
         LatLng center = DEFAULT_LOCATION;
+        userLatLng = DEFAULT_LOCATION;
 
         mapFrag = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
