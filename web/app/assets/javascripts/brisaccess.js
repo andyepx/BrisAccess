@@ -50,10 +50,10 @@ angular.module('brisAccess', ['uiGmapgoogle-maps', 'ng-mfb', 'angucomplete'])
     	console.log(pinLookup);
 
     	var p = a.getPosition();
-    	$scope.map.center = {
-    		latitude: p.A,
-    		longitude: p.F
-    	}
+    	// $scope.map.center = {
+    	// 	latitude: p.A,
+    	// 	longitude: p.F
+    	// }
 
     	$scope.details = pinLookup[0]
     	$scope.$apply();
@@ -71,10 +71,10 @@ angular.module('brisAccess', ['uiGmapgoogle-maps', 'ng-mfb', 'angucomplete'])
 
     	var p = a.getPosition();
     	// console.log(p);
-    	$scope.map.center = {
-    		latitude: p.A,
-    		longitude: p.F
-    	}
+    	// $scope.map.center = {
+    	// 	latitude: p.A,
+    	// 	longitude: p.F
+    	// }
 
     	$scope.details = pinLookup[0]
     	$scope.$apply();
@@ -92,10 +92,10 @@ angular.module('brisAccess', ['uiGmapgoogle-maps', 'ng-mfb', 'angucomplete'])
 
     	var p = a.getPosition();
     	// console.log(p);
-    	$scope.map.center = {
-    		latitude: p.A,
-    		longitude: p.F
-    	}
+    	// $scope.map.center = {
+    	// 	latitude: p.A,
+    	// 	longitude: p.F
+    	// }
 
     	$scope.details = pinLookup[0]
     	$scope.$apply();
