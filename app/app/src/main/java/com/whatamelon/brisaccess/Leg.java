@@ -9,11 +9,22 @@ public class Leg
     String fromStopId;
     String toStopId;
 
+    Route route;
+
     public Leg (String poly, String from, String to)
     {
         polyline = poly;
         fromStopId = from;
         toStopId = to;
+    }
+
+    public Leg (String poly, String from, String to, Route route)
+    {
+        polyline = poly;
+        fromStopId = from;
+        toStopId = to;
+
+        this.route = route;
     }
 
     public String getPolyline ()
@@ -29,5 +40,15 @@ public class Leg
     public String getToStopId ()
     {
         return toStopId;
+    }
+
+    public void setRoute (Route legRoute)
+    {
+        route = legRoute;
+    }
+
+    public Route getRoute ()
+    {
+        return route;
     }
 }

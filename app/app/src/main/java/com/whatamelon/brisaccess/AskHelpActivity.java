@@ -62,4 +62,11 @@ public class AskHelpActivity extends ActionBarActivity
         smsIntent.setType("vnd.android-dir/mms-sms");
         startActivity(smsIntent);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem)
+    {
+        onBackPressed();
+        return true;
+    }
 }

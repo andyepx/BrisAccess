@@ -107,14 +107,6 @@ public class MainActivity extends AppCompatActivity implements
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
-
-        mapInit();
-
         SimpleCursorAdapter cursorAdapter = getSimpleCursorAdapter();
         destInput = (AutoCompleteTextView) findViewById(R.id.dest_input);
         destInput.setAdapter(cursorAdapter);
@@ -155,6 +147,19 @@ public class MainActivity extends AppCompatActivity implements
         goButton.setOnClickListener(this);
 
         progressBar = (ProgressBar) findViewById(R.id.progress_spinner);
+
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+
+        googleApiClient.connect();
+
+        showProgressBar(true);
+        mapInit();
+        AccessibilityLoader accessibilityLoader = new AccessibilityLoader(mMap);
+        accessibilityLoader.loadAllTrainStationsAccessibility();
     }
 
     public static void showProgressBar(boolean visible)
@@ -177,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 15));
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setMapToolbarEnabled(false);
 
         mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener()
         {
@@ -185,22 +191,18 @@ public class MainActivity extends AppCompatActivity implements
             {
                 String snippet = marker.getSnippet();
 
-                switch (snippet)
+                if (snippet.contains("ASSIST REQUIRED"))
                 {
-                    case "ASSIST REQUIRED":
-                        showHelpActivity(R.drawable.assist_icon,
-                                         R.string.assist_title,
-                                         R.string.assist_content);
-                        break;
-                    case "WARNING: STAIRS":
-                        showHelpActivity(R.drawable.stairs_icon,
-                                         R.string.stairs_title,
-                                         R.string.stairs_content);
-                        break;
-                    default:
-                        break;
+                    showHelpActivity(R.drawable.assist_icon,
+                            R.string.assist_title,
+                            R.string.assist_content);
                 }
-
+                else if (snippet.contains("WARNING: STAIRS"))
+                {
+                    showHelpActivity(R.drawable.stairs_icon,
+                            R.string.stairs_title,
+                            R.string.stairs_content);
+                }
             }
         });
     }
@@ -212,13 +214,6 @@ public class MainActivity extends AppCompatActivity implements
         intent.putExtra(HELP_TITLE, getString(titleId));
         intent.putExtra(HELP_CONTENT, getString(contentId));
         startActivity(intent);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // Connect the client.
-        googleApiClient.connect();
     }
 
     @Override
@@ -243,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onConnectionSuspended(int i)
     {
-        Log.i(TAG, "GoogleApiClient connection has been suspend");
+        Log.i(TAG, "GoogleApiClient connection has been suspended");
     }
 
     @Override
@@ -266,6 +261,7 @@ public class MainActivity extends AppCompatActivity implements
 
         userMarker.setVisible(true);
         userMarker.setPosition(userLatLng);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 15));
 
         LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
     }
@@ -364,6 +360,7 @@ public class MainActivity extends AppCompatActivity implements
 
                 JourneyLoader.removeAllLines();
                 StopsLoader.removeAllStopMarkers();
+                AccessibilityLoader.removeAllStopMarkers();
 
                 JourneyLoader loader = new JourneyLoader(
                             requestParameters.get(0),

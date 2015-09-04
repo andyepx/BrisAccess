@@ -14,6 +14,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -24,6 +25,7 @@ public class StopsLoader implements JSONRequest.NetworkListener
     private ArrayList<Leg> legs;
     private ArrayList<Stop> nonTrainStops;
     private ArrayList<Stop> trainStops;
+    private Route[] routes;
     private static ArrayList<Marker> stopMarkers = new ArrayList<>();
 
     private JSONRequest request;
@@ -40,6 +42,7 @@ public class StopsLoader implements JSONRequest.NetworkListener
 
         nonTrainStops = new ArrayList<>();
         trainStops = new ArrayList<>();
+        routes = new Route[legs.size()];
     }
 
     public void loadStops ()
@@ -48,7 +51,12 @@ public class StopsLoader implements JSONRequest.NetworkListener
 
         for(int i = 1; i < legs.size(); i++)
         {
-            stopIds = stopIds.concat("," + legs.get(i).toStopId);
+            Leg currentLeg = legs.get(i);
+            stopIds = stopIds.concat("," + currentLeg.toStopId);
+
+            Route legRoute = currentLeg.getRoute();
+            if(legRoute != null)
+                routes[i-1] = legRoute;
         }
 
         String urlString = "http://dev-cloud.teardesign.com:3030/data/translink/stops?stops="
@@ -80,9 +88,15 @@ public class StopsLoader implements JSONRequest.NetworkListener
             LatLng position = new LatLng((Double) latLng.get("Lat"), (Double) latLng.get("Lng"));
 
             if(type == 2)
-                trainStops.add(new Stop(stopID, name, type, position));
+            {
+                Stop trainStop = new Stop(stopID, name, type, position, routes[i]);
+                String parentId = (String) ((JSONObject) stop.get("ParentLocation")).get("Id");
+                trainStop.setParentId(parentId);
+
+                trainStops.add(trainStop);
+            }
             else
-                nonTrainStops.add(new Stop(stopID, name, type, position));
+                nonTrainStops.add(new Stop(stopID, name, type, position, routes[i]));
         }
 
         addNonTrainStopsMarkerToMap();
@@ -101,10 +115,18 @@ public class StopsLoader implements JSONRequest.NetworkListener
         for(Stop stop : nonTrainStops)
         {
             int serviceType = stop.getServiceType();
+            Route route = stop.getRoute();
+
+            String snippet = null;
+            if(route != null)
+            {
+                snippet = route.getRouteCode() + " at " + (new SimpleDateFormat("HH:mm").format(route.getDepartureTime()));
+            }
 
             Marker m = map.addMarker(new MarkerOptions()
                     .position(stop.getPosition())
                     .title(stop.getDescription())
+                    .snippet(snippet)
                     .icon(BitmapDescriptorFactory.fromResource(markerIcons[serviceType - 1])));
 
             stopMarkers.add(m);
