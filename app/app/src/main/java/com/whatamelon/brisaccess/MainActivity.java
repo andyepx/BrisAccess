@@ -383,7 +383,8 @@ public class MainActivity extends AppCompatActivity implements
                             requestParameters.get(0),
                             requestParameters.get(1),
                             requestParameters.get(2),
-                            mMap);
+                            mMap,
+                            this);
 
                 showProgressBar(true);
 
