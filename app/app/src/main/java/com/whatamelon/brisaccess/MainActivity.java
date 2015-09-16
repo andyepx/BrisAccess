@@ -198,17 +198,20 @@ public class MainActivity extends AppCompatActivity implements
             {
                 String snippet = marker.getSnippet();
 
-                if (snippet.contains("ASSIST REQUIRED"))
+                if (snippet != null)
                 {
-                    showHelpActivity(R.drawable.assist_icon,
-                            R.string.assist_title,
-                            R.string.assist_content);
-                }
-                else if (snippet.contains("WARNING: STAIRS"))
-                {
-                    showHelpActivity(R.drawable.stairs_icon,
-                            R.string.stairs_title,
-                            R.string.stairs_content);
+                    if (snippet.contains("ASSIST REQUIRED"))
+                    {
+                        showHelpActivity(R.drawable.assist_icon,
+                                R.string.assist_title,
+                                R.string.assist_content);
+                    }
+                    else if (snippet.contains("WARNING: STAIRS"))
+                    {
+                        showHelpActivity(R.drawable.stairs_icon,
+                                R.string.stairs_title,
+                                R.string.stairs_content);
+                    }
                 }
             }
         });
